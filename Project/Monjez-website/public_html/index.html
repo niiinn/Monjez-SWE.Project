@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monjez</title>
+	<style>
+    * { 
+    box-sizing: border-box; 
+    margin: 0; 
+    padding: 0; 
+}
+
+
+header select {
+    margin-right: auto; 
+}
+
+
+.theme-menu {
+    display: none; 
+    Position:absolute;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 2000;
+
+}
+
+.theme-option {
+    width: 50px; 
+    height: auto;
+    cursor: pointer;
+    margin: 5px;
+	
+}
+
+.theme-option:hover {
+    transform: scale(1.1);
+}
+
+
+/* Default Theme */
+body.default {
+    background: #FFFCF2;
+    color: black;
+}
+header.default, footer.default {
+    background: #fceab6;
+    color: white;
+}
+
+/* Default Theme */
+.sidebar.default {
+    background: #fceab6; 
+    border-right: 1px solid #f6b484; 
+}
+
+/* purple Theme */
+body.purple{
+    background: #FFDFEF;
+    color: #69247C;
+}
+header.purple, footer.purple {
+    background: #A888B5;
+    color: #69247C;
+	border-color: #69247C;
+}
+
+
+.task-bar.purple, .high-priority-tasks.purple{
+ background: #EABDE6;
+    color: #69247C;
+	border-color: #69247C;
+}
+
+.add.purple{
+background: #AA60C8;
+    color: #69247C;
+}
+
+/* purple Theme */
+.sidebar.purple {
+    background: #A888B5; 
+    border-right: 1px solid #69247C; 
+}
+
+
+
+/* Blue Theme */
+body.blue{
+    background: #e0f7fa;
+    color: #006064;
+}
+header.blue, footer.blue {
+    background: #b2ebf2;
+    color: #006064;
+	border-color: #006064;
+}
+
+.task-bar.blue,.high-priority-tasks.blue{
+ background: #66d7e5;
+    color: #006064;
+	border-color: #006064;
+}
+
+.add.blue{
+background: #21b2c4;
+    color: #006064;
+}
+
+
+/* Blue Theme */
+.sidebar.blue {
+    background: #b2ebf2; 
+    border-right: 1px solid #006064; 
+}
+
+/* Green Theme */
+body.green{
+    background: #e8f5e9;
+    color: #1b5e20;
+}
+
+header.green, footer.green{
+    background: #c8e6c9;
+    color: #1b5e20;
+	border-color: #1b5e20;
+}
+
+.task-bar.green, .high-priority-tasks.green{
+ background: #a7d7a9;
+    color: #1b5e20;
+	border-color: #1b5e20;
+}
+
+.add.green{
+background: #84c787;
+    color: #1b5e20;
+}
+
+
+
+/* Green Theme */
+.sidebar.green {
+    background: #c8e6c9; 
+    border-right: 1px solid #1b5e20; 
+}
+
+
+
+body { 
+    font-family: Arial, sans-serif; 
+    display: flex; 
+    flex-direction: column; 
+    min-height: 100vh; 
+    background-color: #FFFCF2;
+    color: #333; 
+}
+header { 
+    margin-bottom: 20px; 
+    background: #fceab6; 
+    color: white; 
+    padding: 15px; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    border-bottom: 2px solid #f6b484;
+    width: 100%; 
+    position: sticky; 
+    top: 0; 
+    left: 0; 
+    height: 70px; 
+    z-index: 1000; 
+}
+
+footer { 
+    
+    background: #fceab6; 
+    color: white; 
+    text-align: center; 
+    padding: 15px; 
+     position: fixed;
+    bottom: 0; 
+    width: 100%; 
+    height: 60px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    border-top: 2px solid #f6b484;
+	z-index:1;
+}
+.container {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; 
+    min-height: calc(100vh - 130px); 
+}
+
+.sidebar {
+    width: 280px; 
+     background: #fceab6; 
+      padding: 20px; 
+      display: flex; 
+            flex-direction: column; 
+      height: 100%; 
+            border-right: 1px solid #f6b484; 
+            justify-content: flex-start; 
+            position: fixed; 
+            left: 0; 
+            top: 60px; 
+            border-radius: 0 20px 20px 0; 
+            z-index: 0;
+}
+
+
+.content { 
+    flex: 1; 
+    padding: 20px; 
+   
+    text-align: center; 
+    padding-bottom: 100px; 
+    margin-top: 20px;
+     margin-left: 280px; /* ✅ يترك مساحة السايدبار */
+    width: calc(100% - 280px); /* ✅ يضمن أن العناصر تتوزع في المساحة المتبقية */
+    max-width: 1000px; /* ✅ لمنع التمدد الزائد */
+    margin-right: auto;
+}
+.search-box { 
+    flex: 1; 
+    display: flex; 
+    justify-content: center; 
+}
+.search-box input { 
+    width: 250px; 
+    padding: 10px; 
+    border: 1px solid #f6b484; 
+    border-radius: 25px; 
+    text-align: center; 
+    font-size: 16px; 
+}
+.container { 
+    display: flex; 
+    flex: 1; 
+    margin-top: 60px; 
+    padding-bottom: 100px; 
+    justify-content: center; 
+}
+
+
+.sidebar a { 
+    text-decoration: none; 
+    color: #333; 
+    padding: 15px; 
+    background: white; 
+    margin-bottom: 10px; 
+    text-align: left; 
+    border-radius: 25px; 
+    transition: background 0.3s; 
+    display: flex; 
+    align-items: center; 
+    gap: 10px; 
+}
+.sidebar a:hover {
+background:#C0C0C0;}
+
+.logout {
+    position: absolute;  
+    bottom: 120px;  
+    left: 50%;  
+    transform: translateX(-50%);  
+    width: 80%; 
+    padding: 12px; 
+    text-align: center; 
+    background: #f48e82; 
+    color: white; 
+    border-radius: 25px; 
+    transition: all 0.3s ease-in-out; 
+}
+.logout:hover {
+    background: #e07a7a;
+}
+
+
+.task-list { 
+    background: white; 
+    padding: 20px; 
+    border-radius: 15px; 
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1); 
+   margin: 20px auto; 
+    width: 60%;  
+    max-width: 600px; 
+    
+}
+.task-list ul { 
+    list-style: none; 
+    padding: 0; 
+}
+.task-list li { 
+    padding: 15px; 
+    border: 1px solid #ddd; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    border-radius: 10px; 
+}
+input[type='checkbox']{
+accent-color:#f9b5a8;
+}
+.task-bar { 
+   position: fixed;
+            bottom: 60px; 
+            left: 280px;
+            width: 100%;
+            background: #fac2b7;
+            padding: 15px;
+            border-top: 2px solid #f6b484;
+            display: flex;
+            justify-content: center;
+            text-align: center;
+            gap: 10px;
+            box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.1);
+             width: calc(100% - 280px); 
+
+}
+.task-bar input, 
+.task-bar select, 
+.task-bar button { 
+    padding: 8px; 
+    margin: 5px; 
+	margin-left:20px;
+
+    border-radius: 25px; 
+    border: 1px solid #ddd; 
+    font-size: 14px; 
+}
+.task-bar button { 
+    background: #f8a696; 
+    color: white; 
+    font-weight: bold; 
+    cursor: pointer; 
+	margin-right:200px;
+}
+
+
+.profile-container { 
+    display: flex; 
+    align-items: center; 
+    gap: 10px; 
+    padding: 15px; 
+    background: white; 
+    border-radius: 15px; 
+    margin-bottom: 10px; 
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); 
+}
+.profile-container img { 
+    width: 45px; 
+    height: 45px; 
+    border-radius: 50%; 
+    object-fit: cover; 
+    border: 2px solid #f6b484; 
+}
+.profile-container span { 
+    font-size: 16px; 
+    font-weight: bold; 
+    color: #333; 
+}
+.completed-task { 
+    background: #e0e0e0; 
+    text-decoration: line-through; 
+    text-decoration-thickness: 2px; 
+    text-decoration-color: #333; 
+    opacity: 0.7; 
+    padding: 15px; 
+    border-radius: 10px; 
+}
+.high-priority-tasks { 
+    background: #fac2b7; 
+    padding: 15px; 
+    border-radius: 15px; 
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); 
+    margin: 20px auto; 
+    max-width: 600px; 
+    text-align: center; 
+    width: 60%;  
+   
+}
+.high-priority-tasks h2 { 
+    font-size: 18px; 
+    color: white; 
+    margin-bottom: 10px; 
+}
+.high-priority-tasks ul { 
+    list-style: none; 
+    padding: 0; 
+}
+.high-priority-tasks li { 
+    background: white; 
+    padding: 10px; 
+    margin-bottom: 5px; 
+    border-radius: 10px; 
+    border-left: 5px solid #D9534F; 
+    display: flex; 
+    justify-content: space-between; 
+}
+.logo { 
+    height: 70px; 
+    width: auto; 
+	margin-right:49px;
+}
+.home-logo { 
+    height: 40px; 
+    width: auto; 
+    border-radius: 5px; 
+}
+.task-content-wrapper { 
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
+    width: 100%; 
+}
+.task-details { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 3px; 
+    flex-grow: 1; 
+}
+.task-actions { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 5px; 
+}
+.task-actions button { 
+    padding: 6px; 
+    font-size: 14px; 
+    border: none; 
+    cursor: pointer; 
+    border-radius: 25px; 
+    transition: background 0.3s; 
+}
+.task-actions button:first-child { 
+    background: #f6b484; 
+    color: white; 
+}
+.task-actions button:first-child:hover { 
+    background: #e07a7a; 
+}
+.task-actions button:last-child { 
+    background: #d9534f; 
+    color: white; 
+}
+.task-actions button:last-child:hover { 
+    background: #c9302c; 
+}
+.search-results-container { 
+    display: none; 
+    position: fixed; 
+    top: 40%; 
+    left: 55%; 
+    transform: translate(-50%, -50%); 
+    padding: 25px; 
+    background: white; 
+    border-radius: 15px; 
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2); 
+    width: 450px; 
+    max-width: 85%; 
+    text-align: center; 
+    z-index: 1000; 
+    animation: fadeIn 0.3s ease-in-out; 
+	
+}
+.search-results-container h2 { 
+    font-size: 24px; 
+    margin-bottom: 12px; 
+    color: #333; 
+    font-weight: bold; 
+}
+.search-results-container ul { 
+    list-style: none; 
+    padding: 0; 
+    max-height: 200px; 
+    overflow-y: auto; 
+    font-size: 16px; 
+}
+.search-results-container li { 
+    padding: 12px; 
+    border-bottom: 1px solid #ddd; 
+    cursor: pointer; 
+    transition: background 0.3s ease-in-out; 
+}
+.search-results-container li:hover { 
+    background: #f6b484; 
+}
+.no-results { 
+    font-size: 18px; 
+    color: red; 
+    font-weight: bold; 
+    display: block; 
+    margin-top: 12px; 
+}
+.back-to-tasks { 
+    background: #f6b484; 
+    color: white; 
+    padding: 12px 18px; 
+    border: none; 
+    border-radius: 25px; 
+    cursor: pointer; 
+    font-size: 16px; 
+    margin-top: 15px; 
+    transition: all 0.3s ease-in-out; 
+}
+.back-to-tasks:hover { 
+    background: #e07a7a; 
+}
+@keyframes fadeIn { 
+    from { 
+        opacity: 0; 
+        transform: translate(-50%, -55%); 
+    } 
+    to { 
+        opacity: 1; 
+        transform: translate(-50%, -50%); 
+    } 
+}
+.progress-container { 
+    background: #e0e0e0; 
+    border-radius: 10px; 
+    height: 20px; 
+    margin: 20px 0; 
+    width: 100%; 
+    display: flex; 
+    align-items: center; 
+    position: relative; 
+	
+}
+.progress-bar { 
+    background:#C0C0C0; 
+    height: 100%; 
+    border-radius: 10px; 
+    transition: width 0.3s; 
+}
+.circle { 
+    width: 50px; 
+    height: 50px; 
+    border-radius: 50%; 
+    background: #C0C0C0; 
+    color: white; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    font-size: 18px; 
+    font-weight: bold; 
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); 
+    left: 50%; 
+}
+</style>
+</head>
+<body>
+    
+    
+        <header class="default">
+    <img src="images/logo.png" alt="Logo" class="logo">
+    <img src="images/theme.png" alt="Theme" id="themeIcon" onclick="toggleThemeMenu()" style="cursor: pointer;" height='50;' weight='50;'>
+    <div id="themeMenu" class="theme-menu">
+        <img src="images/default.png" alt="Default" onclick="changeTheme('default')" class="theme-option">
+        <img src="images/purple.png" alt="Purple" onclick="changeTheme('purple')" class="theme-option">
+        <img src="images/blue.png" alt="Blue" onclick="changeTheme('blue')" class="theme-option">
+        <img src="images/green.png" alt="Green" onclick="changeTheme('green')" class="theme-option">
+    </div>
+    
+
+        
+        
+        
+        
+   <div class="search-box">
+    <input type="text" id="searchTask" placeholder="Search..." onfocus="showSearchResults()" oninput="filterTasks()">
+</div>
+
+<div id="searchResultsContainer" class="search-results-container" style="display: none;"> 
+    <h2>Search Results</h2>
+    <ul id="searchResultsList"></ul>
+    <p id="noResultsText" class="no-results" style="display: none;">No matching tasks found!</p> 
+    <button class="back-to-tasks" onclick="showTasks()">Back to Tasks</button>
+</div>
+
+
+       <a href="index.html" class="home-link">
+    <img src="images/HP.png" alt="Home" class="home-logo">
+	
+</a>
+
+    </header>
+    
+    
+    
+    <div class="container">
+    <div class="sidebar">
+        <div class="profile-container">
+            <img src="images/pro.png" alt="Profile Picture">
+            <span id="userGreeting">Hello, Guest</span>
+        </div>
+        <div>
+            <a href="#" onclick="showTasks(event)">☀️My Tasks</a>
+            <a href="ShoppingList.html">🛍️ Shopping List</a>
+			<a href="#" class="logout" onclick="logout()">🔓 Logout</a>
+        </div>
+       
+    </div>
+    <div class="content" id="content">
+        <div class="high-priority-tasks">
+            <h2>🚀 High Priority Tasks</h2>
+            <ul id="highPriorityList"></ul>
+        </div>
+    </div>
+</div>
+
+<div class="task-bar" id="taskBar" style="display: none;">
+    <input type="text" id="taskInput" placeholder="Enter task" required>
+    <select id="priority" required>
+        <option value="" disabled selected>Priority</option>
+        <option value="high">High</option>
+        <option value="medium">Medium</option>
+        <option value="low">Low</option>
+    </select>
+	
+	
+    <input type="date" id="dueDate">
+    <button class='add' onclick="addTask()">+ Add a Task</button>  
+</div>
+
+    <footer>
+        &copy; 2025 MONJEZ
+    </footer>
+    <script>
+
+
+function addTask() {
+    const taskInput = document.getElementById("taskInput");
+    const priority = document.getElementById("priority");
+    const dueDate = document.getElementById("dueDate");
+
+    if (!taskInput.value || !priority.value) {
+        alert("Task content and priority are required!");
+        return;
+    }
+
+    const task = {
+        content: taskInput.value,
+        priority: priority.value,
+        dueDate: dueDate.value || 'No Date',
+        completed: false
+    };
+
+    let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+    tasks.push(task);
+
+    console.log("Tasks after adding: ", tasks);
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+
+    renderTasks(); 
+    loadHighPriorityTasks();
+
+    taskInput.value = "";
+    priority.selectedIndex = 0;
+    dueDate.value = "";
+}
+
+
+function markAsComplete(index) {
+    let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+    tasks[index].completed = !tasks[index].completed; 
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+
+    renderTasks();
+    loadHighPriorityTasks(); 
+}
+function editTask(index) {
+    let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+    const taskItem = document.querySelectorAll("#taskList li, #completedList li")[index];
+
+    if (!taskItem) return;
+
+    taskItem.innerHTML = `
+        <input type='text' class='edit-content' value='${tasks[index].content}'>
+        <select class='edit-priority'>
+            <option value="high" ${tasks[index].priority === "high" ? "selected" : ""}>High</option>
+            <option value="medium" ${tasks[index].priority === "medium" ? "selected" : ""}>Medium</option>
+            <option value="low" ${tasks[index].priority === "low" ? "selected" : ""}>Low</option>
+        </select>
+        <input type='date' class='edit-date' value='${tasks[index].dueDate !== 'No Date' ? tasks[index].dueDate : ''}'>
+        <button onclick='saveTask(${index})'>💾</button>
+        <button onclick='renderTasks()'>❌</button>
+    `;
+}
+
+function saveTask(index) {
+    let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+    const taskItem = document.querySelectorAll("#taskList li, #completedList li")[index];
+
+    if (!taskItem) return;
+
+    const content = taskItem.querySelector(".edit-content").value.trim();
+    const priority = taskItem.querySelector(".edit-priority").value;
+    const dueDate = taskItem.querySelector(".edit-date").value || 'No Date';
+
+    if (content === "") {
+        alert("Task content cannot be empty!");
+        renderTasks();
+        return;
+    }
+
+    tasks[index] = { content, priority, dueDate, completed: tasks[index].completed };
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+
+    renderTasks();
+    loadHighPriorityTasks();
+}
+
+function sortTasks() {
+    const priorityOrder = { "high": 1, "medium": 2, "low": 3 };
+
+    ["taskList", "completedList"].forEach(listId => {
+        const list = document.getElementById(listId);
+        Array.from(list.children)
+            .sort((a, b) => {
+                const priorityA = a.getAttribute("data-priority");
+                const priorityB = b.getAttribute("data-priority");
+                return priorityOrder[priorityA] - priorityOrder[priorityB];
+            })
+            .forEach(task => list.appendChild(task));  
+    });
+}
+
+function loadHighPriorityTasks() {
+    const highPriorityList = document.getElementById("highPriorityList");
+    if (!highPriorityList) return; 
+
+    highPriorityList.innerHTML = ""; 
+
+    const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+    const highPriorityTasks = tasks.filter(task => task.priority === "high" && !task.completed);
+
+    if (highPriorityTasks.length === 0) {
+        highPriorityList.innerHTML = `<p> </p>`; 
+    } else {
+        highPriorityTasks.forEach(task => {
+            const li = document.createElement("li");
+            li.innerHTML = `<span>${task.content} - ${task.dueDate}</span>`;
+            highPriorityList.appendChild(li);
+        });
+    }
+}
+
+
+
+
+
+function renderTasks() {
+    const taskList = document.getElementById("taskList");
+    const completedList = document.getElementById("completedList");
+    const progressBar = document.getElementById("progressBar");
+    const progressText = document.getElementById("progressText");
+    const taskCircle = document.getElementById("taskCircle");
+
+    if (!taskList || !completedList) return;
+
+    taskList.innerHTML = "";
+    completedList.innerHTML = "";
+
+    let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+    const totalTasks = tasks.length;
+    let completedTasks = 0;
+
+    tasks.forEach((task, index) => {
+        const taskItem = document.createElement("li");
+        taskItem.setAttribute("data-priority", task.priority);
+        taskItem.innerHTML = `
+            <input type='checkbox' onclick='markAsComplete(${index})' ${task.completed ? "checked" : ""}> 
+            <span class="task-content">${task.content}</span> 
+            - <span class="priority">${task.priority.toUpperCase()}</span> 
+            - <span class="due-date">${task.dueDate}</span> 
+            <button onclick='editTask(${index})'>✏️</button>
+            <button onclick='deleteTask(${index})'>🗑️</button>
+        `;
+
+        if (task.completed) {
+            taskItem.classList.add("completed-task");
+            completedList.appendChild(taskItem);
+            completedTasks++;
+        } else {
+            taskList.appendChild(taskItem);
+        }
+    });
+
+    sortTasks();
+    loadHighPriorityTasks();
+
+    // Update progress bar
+    const completionPercentage = totalTasks ? (completedTasks / totalTasks) * 100 : 0;
+    progressBar.style.width = `${completionPercentage}%`;
+    progressText.textContent = `${completedTasks}/${totalTasks} tasks completed`;
+    
+    // Update task circle
+    taskCircle.textContent = `${completedTasks}/${totalTasks}`;
+}
+
+
+
+function deleteTask(index) {
+    if (confirm("Are you sure you want to delete this task?")) {
+        let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+        tasks.splice(index, 1);
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+        
+        console.log("Task deleted! New tasks list:", tasks);
+        renderTasks();
+    }
+}
+
+function showTasks(event) {
+    if (event) event.preventDefault(); 
+    document.getElementById('taskBar').style.display = 'block'; 
+    document.getElementById("searchResultsContainer").style.display = "none"; // Hide search results
+
+    const content = document.getElementById("content");
+    content.innerHTML = ""; 
+
+    const taskListContainer = document.createElement("div");
+    taskListContainer.classList.add("task-list");
+
+    taskListContainer.innerHTML = `
+    <h2>My Tasks</h2>
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar" style="width: 0%;"></div>
+        <div class="circle" id="taskCircle">0/0</div>
+    </div>
+    <p id="progressText" class="progress-text" style="display: none;">0/0 tasks completed</p>
+    <ul id="taskList"></ul>
+    <ul id="completedList"></ul>
+`;
+
+    content.appendChild(taskListContainer);
+    renderTasks(); 
+}
+
+function filterTasks() {
+    const query = document.getElementById("searchTask").value.toLowerCase().trim();
+    const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+    
+    const searchResultsList = document.getElementById("searchResultsList");
+    const noResultsText = document.getElementById("noResultsText");
+
+    searchResultsList.innerHTML = ""; 
+
+    if (query === "") {
+        document.getElementById("searchResultsContainer").style.display = "none"; 
+        noResultsText.style.display = "none";  
+        return;
+    }
+
+    let found = false;
+
+    tasks.forEach(task => {
+        if (task.content.toLowerCase().includes(query)) {
+            found = true;
+            const resultItem = document.createElement("li");
+            resultItem.innerText = `${task.content} - ${task.priority.toUpperCase()} - ${task.dueDate}`;
+            resultItem.onclick = () => {
+                document.getElementById("searchTask").value = task.content;
+                showTasks();
+            };
+            searchResultsList.appendChild(resultItem);
+        }
+    });
+
+    if (found) {
+        noResultsText.style.display = "none"; 
+    } else {
+        noResultsText.style.display = "block"; 
+    }
+
+    document.getElementById("searchResultsContainer").style.display = "block"; 
+}
+
+function showSearchResults() {
+    const content = document.getElementById("content");
+    content.innerHTML = ` 
+        <div id="searchResultsContainer" class="search-results-container">
+            <h2>Search Results</h2>
+            <ul id="searchResultsList"></ul>
+            <p id="noResultsText" class="no-results" style="display: none;">No matching tasks found!</p> 
+            <button class="back-to-tasks" onclick="showTasks()">Back to Tasks</button>
+        </div>
+    `;
+}
+
+
+
+
+
+function logout() {
+    localStorage.removeItem("loggedInUser");
+    document.getElementById("userGreeting").textContent = "Hello, Guest"; 
+    window.location.href = "login.html";
+}
+
+function loadUserName() {
+    const userGreeting = document.getElementById("userGreeting");
+    let username = localStorage.getItem("loggedInUser");
+
+    if (username) {
+        userGreeting.textContent = `Hello, ${username}`;
+    } else {
+        userGreeting.textContent = "Hello, Guest";
+    }
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    loadUserName();
+    renderTasks();
+    loadHighPriorityTasks(); 
+});
+
+    
+
+
+function toggleThemeMenu() {
+    const menu = document.getElementById('themeMenu');
+    menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+}
+
+function changeTheme(theme) {
+    document.body.classList.remove('default', 'purple', 'blue', 'green');
+    document.body.classList.add(theme);
+    
+    const header = document.querySelector('header');
+    const footer = document.querySelector('footer');
+    const sidebar = document.querySelector('.sidebar');
+	 const taskBar = document.querySelector('.task-bar'); 
+	 const highPrio = document.querySelector('.high-priority-tasks');
+	  
+	
+    
+    header.classList.remove('default', 'purple', 'blue', 'green');
+    header.classList.add(theme);
+    
+    footer.classList.remove('default', 'purple', 'blue', 'green');
+    footer.classList.add(theme);
+    
+    sidebar.classList.remove('default', 'purple', 'blue', 'green');
+    sidebar.classList.add(theme);
+	
+	
+
+	
+	 taskBar.className = 'task-bar ' + theme; 
+	
+	
+	
+	const addButtons = document.querySelectorAll('.add');
+    addButtons.forEach(element => {
+        element.classList.remove('default', 'purple', 'blue', 'green');
+        element.classList.add(theme);
+    });
+	
+	highPrio.classList.remove('default', 'purple', 'blue', 'green');
+    highPrio.classList.add(theme);
+	
+
+    
+    localStorage.setItem('selectedTheme', theme);
+    
+    document.getElementById('themeMenu').style.display = 'none';
+}
+
+window.onclick = function(event) {
+    if (!event.target.matches('#themeIcon')) {
+        const menu = document.getElementById('themeMenu');
+        if (menu.style.display === 'block') {
+            menu.style.display = 'none';
+        }
+    }
+};
+
+window.onload = function() {
+    const savedTheme = localStorage.getItem('selectedTheme');
+    if (savedTheme) {
+        changeTheme(savedTheme);
+    }
+};
+</script>
+	</body>
+</html>
+     
